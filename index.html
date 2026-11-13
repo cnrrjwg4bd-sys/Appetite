@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appetite</title>
+  <!-- CONNECTION: Links your CSS file inside the <head> -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP NAVIGATION / HEADER -->
+  <header class="app-header">
+    <div class="logo">Appetite</div>
+  </header>
+
+  <!-- SPLIT HERO BANNER (Matches Canva Layout) -->
+  <section class="hero-banner">
+    <div class="hero-left">
+      <h1 class="hero-title">Appetite</h1>
+      <p class="hero-subtitle">Delicious lunch on time for your 20-minute break</p>
+      <!-- BUTTON: Opens the food options -->
+      <button id="order-now-btn" class="btn-order">ORDER NOW</button>
+    </div>
+    <div class="hero-right">
+      <!-- Placeholder visual matching your Canva circular/featured meal plate -->
+      <div class="hero-food-display">🍔 🍕 🥗</div>
+    </div>
+  </section>
+
+  <!-- VENDOR SELECTION SECTION (Hidden until ORDER NOW is clicked) -->
+  <section id="vendor-section" class="vendor-section hidden">
+    <h2 class="section-title">Choose Where to Order From</h2>
+    <p class="section-subtitle">Select a spot close to school or the cafeteria to view its menu</p>
+
+    <div class="vendor-grid">
+      <!-- Vendor Card 1 -->
+      <div class="vendor-card" onclick="selectVendor('burgerking')">
+        <div class="vendor-icon">🍔</div>
+        <h3>Burger King</h3>
+        <p>Fast flame-grilled burgers & sides</p>
+        <button class="btn-select">View Menu</button>
+      </div>
+
+      <!-- Vendor Card 2 -->
+      <div class="vendor-card" onclick="selectVendor('pizzeria')">
+        <div class="vendor-icon">🍕</div>
+        <h3>Sun's Pizzeria</h3>
+        <p>Hot slices & garlic knots</p>
+        <button class="btn-select">View Menu</button>
+      </div>
+
+      <!-- Vendor Card 3 -->
+      <div class="vendor-card" onclick="selectVendor('school')">
+        <div class="vendor-icon">🥗</div>
+        <h3>School Lunch</h3>
+        <p>Fresh daily cafeteria meals</p>
+        <button class="btn-select">View Menu</button>
+      </div>
+
+      <!-- Vendor Card 4 -->
+      <div class="vendor-card" onclick="selectVendor('local')">
+        <div class="vendor-icon">🥪</div>
+        <h3>Local Corner Deli</h3>
+        <p>Quick wraps & sandwiches nearby</p>
+        <button class="btn-select">View Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEPARATE VENDOR MENU SECTION -->
+  <section id="menu-section" class="menu-section hidden">
+    <button id="back-to-vendors-btn" class="btn-back">← Back to Food Options</button>
+    <h2 id="menu-title" class="section-title">Menu</h2>
+    <p class="section-subtitle">Click an item to add it to your lunch order</p>
+
+    <!-- Menu items will be injected here by JavaScript based on the selected vendor -->
+    <div id="menu-items-container" class="menu-grid"></div>
+  </section>
+
+  <!-- SHOPPING CART SECTION -->
+  <section id="cart-section" class="cart-section">
+    <h2 class="section-title">Your Lunch Order</h2>
+    <!-- Displays items added to the cart -->
+    <ul id="cart-items-list" class="cart-list">
+      <li class="empty-cart-msg">Your cart is currently empty.</li>
+    </ul>
+    <!-- Displays the running total price -->
+    <p class="cart-total">Total: $<span id="cart-total-price">0.00</span></p>
+    <!-- Button to proceed to checkout (we will connect this in Feature 5) -->
+    <button id="proceed-checkout-btn" class="btn-order hidden">Proceed to Checkout</button>
+  </section>
+  <!-- CHECKOUT SECTION (Hidden until Proceed to Checkout is clicked) -->
+  <section id="checkout-section" class="checkout-section hidden">
+    <h2 class="section-title">Checkout & Pickup Details</h2>
+    <p class="section-subtitle">Schedule your pickup so your lunch is ready for your 20-minute break</p>
+
+    <form id="checkout-form" class="checkout-form">
+      <!-- Staff Name -->
+      <label for="staff-name">Staff / Teacher Name:</label>
+      <input type="text" id="staff-name" placeholder="e.g., Ms. Johnson" required>
+
+      <!-- Pickup Time Slot -->
+      <label for="pickup-time">Select Lunch Pickup Time:</label>
+      <select id="pickup-time" required>
+        <option value="">-- Choose a 20-Minute Break Slot --</option>
+        <option value="11:15 AM">11:15 AM (Period 4 Break)</option>
+        <option value="11:45 AM">11:45 AM (Period 5 Break)</option>
+        <option value="12:15 PM">12:15 PM (Period 6 Break)</option>
+        <option value="12:45 PM">12:45 PM (Period 7 Break)</option>
+      </select>
+
+      <!-- Discount Code Input -->
+      <label for="discount-code">Staff Discount Code (Try TEACHER10):</label>
+      <div class="discount-row">
+        <input type="text" id="discount-code" placeholder="Enter code">
+        <button type="button" id="apply-discount-btn" class="btn-select">Apply</button>
+      </div>
+      <p id="discount-message" class="discount-msg"></p>
+
+      <!-- Simulated Card Payment (Prototype Only) -->
+      <label for="card-number">Card Number (Demo Prototype Only):</label>
+      <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+
+      <p class="checkout-final-total">Final Total: $<span id="final-total-price">0.00</span></p>
+
+      <button type="submit" class="btn-order">Place Lunch Order</button>
+    </form>
+  </section>
+  <!-- ORDER CONFIRMATION SECTION (Hidden until order is placed) -->
+  <section id="confirmation-section" class="confirmation-section hidden">
+    <div class="receipt-card">
+      <div class="receipt-icon">✅</div>
+      <h2 class="section-title">Lunch Order Confirmed!</h2>
+      <p class="section-subtitle">Your food will be ready on time for your 20-minute break.</p>
+
+      <div class="receipt-details">
+        <p><strong>Staff Member:</strong> <span id="receipt-name"></span></p>
+        <p><strong>Pickup Time:</strong> <span id="receipt-time"></span></p>
+        <p><strong>Items Ordered:</strong> <span id="receipt-items"></span></p>
+        <p class="receipt-total"><strong>Total Paid:</strong> $<span id="receipt-total"></span></p>
+      </div>
+
+      <button id="new-order-btn" class="btn-order">Start New Order</button>
+    </div>
+  </section>
+  <!-- CONNECTION: Loads your JavaScript right before closing </body> -->
+  <script src="script.js"></script>
+</body>
+</html>
